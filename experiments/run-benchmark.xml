@@ -1,0 +1,43 @@
+<runscript output="output">
+	<machine name="houat" cpu="8xE5520@2.27GHz" memory="24GB"/>
+	<config name="seq-generic" template="templates/basic.sh"/>
+	<system name="general" version="0" measures="clingo" config="seq-generic">
+        
+
+    <!-- SET DIFFERENT CONFIGURATIONS /-->
+    <setting name="one"   command="/home/davila/Experiments/solver.sh" options="1 --stats" tag="doit"/>
+    <setting name="two"   command="/home/davila/Experiments/solver.sh" options="2 --stats" tag="doit"/>
+    <setting name="three" command="/home/davila/Experiments/solver.sh" options="3 --stats"           />
+
+    
+    </system>
+
+
+	<!--  SET TIMEOUT, SET MEMORY, SET PARALLEL /-->
+	<seqjob name="seq-generic" timeout="10" memory="4000" runs="1" parallel="4"/>
+
+
+    <!-- SET INSTANCE FOLDERS /-->
+	<benchmark name="seq-suite">
+        <folder path="/home/davila/Experiments/instances">		
+            <dir_ignore  prefix="ko"/>
+            <file_accept prefix="a"/>
+            <file_accept prefix="pigeon"/>
+            <file_accept prefix="b"/>
+            <file_ignore prefix="b"/>
+        </folder>
+	</benchmark>
+
+
+	<project name="general" job="seq-generic">
+        
+ 
+    <!-- SET TAG IF NEEDED /-->
+	<!--runtag machine="houat" benchmark="seq-suite" tag="*all*"/-->
+	<runtag machine="houat" benchmark="seq-suite" tag="doit"/>
+
+	
+    </project>
+
+</runscript>
+

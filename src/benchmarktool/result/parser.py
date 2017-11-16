@@ -11,7 +11,7 @@ from benchmarktool.result.result import Benchmark, Class, ClassResult, Config, I
 class Parser:
     """
     A parser to parse XML result files.
-    """    
+    """
     def __init__(self):
         """
         Initializes the parser.
@@ -28,37 +28,37 @@ class Parser:
         self.runspec      = None
         self.project      = None
         self.run          = None
-    
+
     def parse(self, infile):
         """
-        Parse a given result file and return its representation 
+        Parse a given result file and return its representation
         in form of an instance of class Result.
-        
+
         Keyword arguments:
-        infile -- The file to parse  
+        infile -- The file to parse
         """
         # to reduce memory consumption especially for large result files
-        # do not use the full blown etree representation 
+        # do not use the full blown etree representation
         parser = etree.XMLParser(target=self)
         etree.parse(infile, parser)
         return self.result
-        
+
     def start(self, tag, attrib):
         """
         This method is called for every opening XML tag.
-        
+
         tag    - The name of the tag
-        attrib - The attributes of the tag  
+        attrib - The attributes of the tag
         """
         if tag == "result":
             self.systemOrder = 0
             self.result = Result()
         elif tag == "machine":
             machine =  Machine(attrib["name"], attrib["cpu"], attrib["memory"])
-            self.result.machines[machine.name] = machine 
+            self.result.machines[machine.name] = machine
         elif tag == "config":
             config = Config(attrib["name"], attrib["template"])
-            self.result.configs[config.name] = config 
+            self.result.configs[config.name] = config
         elif tag == "system":
             self.system = System(attrib["name"], attrib["version"], attrib["config"], attrib["measures"], self.systemOrder)
             self.result.systems[(self.system.name, self.system.version)] = self.system
@@ -67,8 +67,9 @@ class Parser:
         elif tag == "setting":
             tag     = attrib.pop("tag", None)
             name    = attrib.pop("name")
-            cmdline = attrib.pop("cmdline")
-            setting = Setting(self.system, name, cmdline, tag, self.settingOrder, attrib)
+            command = attrib.pop("command")
+            options = attrib.pop("options")
+            setting = Setting(self.system, name, command, options, tag, self.settingOrder, attrib)
             self.system.settings[name] = setting
             self.settingOrder += 1
         elif tag == "seqjob":
@@ -88,7 +89,7 @@ class Parser:
             self.result.jobs[job.name] = job
             pass
         elif tag == "benchmark":
-            self.benchscope = True 
+            self.benchscope = True
             self.benchmark = Benchmark(attrib["name"])
             self.result.benchmarks[self.benchmark.name] = self.benchmark
         elif tag == "class" and self.benchscope:
@@ -116,7 +117,7 @@ class Parser:
             self.run = Run(self.instresult, int(attrib["number"]))
             self.instresult.runs.append(self.run)
         elif tag == "measure":
-            self.run.measures[attrib["name"]] = (attrib["type"], attrib["val"]) 
+            self.run.measures[attrib["name"]] = (attrib["type"], attrib["val"])
 
     def close(self):
         """

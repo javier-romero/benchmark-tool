@@ -1,0 +1,35 @@
+
+FILES
+=====
+
+1. This README
+2. do_benchmarks.sh
+   script to execute the benchmarks
+3. run-benchmark.xml 
+   specification of the experiments
+4. instances
+   folder with some instance files
+5. solver.sh 
+   script used in the experiments
+   
+HOWTO
+=====
+
+Of the given files, only run-benchmark.xml has to be modified.
+
+1. set in run-benchmark.xml:
+   - configurations
+     the $command with as first argument one instance file, and then the options
+   - timeout, memory and parallel number of processors
+   - instance directory
+     * you can use dir_accept, dir_ignore, file_accept, and file_ignore
+       with X_accept only Xs starting with the prefix will be accepted
+       with X_ignore      Xs starting with the prefix will be ignored
+
+2. set the $command and $options
+
+3. run 
+   do_benchmarks.sh name_of_the_experiments
+
+4. Results will be stored in directory
+     data/name_of_the_experiments

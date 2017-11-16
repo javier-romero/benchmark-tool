@@ -1,6 +1,6 @@
 """
-This module contains an XML-parser for run script specifications. 
-It reads and converts a given specification and returns its 
+This module contains an XML-parser for run script specifications.
+It reads and converts a given specification and returns its
 representation in form of python classes.
 """
 
@@ -14,23 +14,23 @@ except: from io import StringIO
 class Parser:
     """
     A parser to parse xml runscript specifications.
-    """   
+    """
     def __init__(self):
         """
         Initializes the parser.
         """
         pass
-    
+
     def parse(self, fileName):
         """
-        Parse a given runscript and return its representation 
+        Parse a given runscript and return its representation
         in form of an instance of class Runscript.
-        
+
         Keyword arguments:
-        fileName -- a string holding a path to a xml file  
+        fileName -- a string holding a path to a xml file
         """
         from lxml import etree
-        
+
         schemadoc = etree.parse(StringIO("""\
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <!-- the runscript -->
@@ -54,7 +54,7 @@ class Parser:
         </xs:choice>
         <xs:attribute name="output" type="xs:string" use="required"/>
     </xs:complexType>
-    
+
     <!-- a project -->
     <xs:complexType name="projectType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -64,7 +64,7 @@ class Parser:
         <xs:attribute name="name" type="nameType" use="required"/>
         <xs:attribute name="job" type="nameType" use="required"/>
     </xs:complexType>
-    
+
     <!-- a machine -->
     <xs:complexType name="machineType">
         <xs:attribute name="name" type="nameType" use="required"/>
@@ -107,13 +107,14 @@ class Parser:
         <xs:attribute name="runs" type="xs:positiveInteger" use="required"/>
         <xs:anyAttribute processContents="lax"/>
     </xs:attributeGroup>
-    
+
     <!-- a seqjob -->
     <xs:complexType name="seqjobType">
         <xs:attributeGroup ref="jobAttr"/>
+        <xs:attribute name="memory"  type="xs:positiveInteger" use="required"/>
         <xs:attribute name="parallel" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
-    
+
     <!-- a pbsjob -->
     <xs:complexType name="pbsjobType">
         <xs:attributeGroup ref="jobAttr"/>
@@ -127,13 +128,13 @@ class Parser:
         </xs:attribute>
         <xs:attribute name="walltime" type="timeType" use="required"/>
     </xs:complexType>
-    
+
     <!-- a config -->
     <xs:complexType name="configType">
         <xs:attribute name="name" type="nameType" use="required"/>
         <xs:attribute name="template" type="xs:string" use="required"/>
     </xs:complexType>
-    
+
     <!-- a benchmark -->
     <xs:complexType name="benchmarkType">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -153,11 +154,33 @@ class Parser:
                 <xs:element name="folder">
                     <xs:complexType>
                         <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                            <xs:element name="ignore">
+                            <xs:choice>
+                                <xs:element name="ignore">
                                 <xs:complexType>
                                     <xs:attribute name="prefix" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
+                            <xs:element name="dir_ignore">
+                                <xs:complexType>
+                                    <xs:attribute name="prefix" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="dir_accept">
+                                <xs:complexType>
+                                    <xs:attribute name="prefix" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="file_ignore">
+                                <xs:complexType>
+                                    <xs:attribute name="prefix" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="file_accept">
+                                <xs:complexType>
+                                    <xs:attribute name="prefix" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            </xs:choice>
                         </xs:sequence>
                         <xs:attribute name="path" type="xs:string" use="required"/>
                     </xs:complexType>
@@ -166,13 +189,13 @@ class Parser:
         </xs:sequence>
         <xs:attribute name="name" type="nameType" use="required"/>
     </xs:complexType>
-    
+
     <!-- common attributes for runspec/runtag -->
     <xs:attributeGroup name="runAttr">
         <xs:attribute name="machine" type="nameType" use="required"/>
         <xs:attribute name="benchmark" type="nameType" use="required"/>
     </xs:attributeGroup>
-    
+
     <!-- a runspec -->
     <xs:complexType name="runspecType">
         <xs:attribute name="system" type="nameType" use="required"/>
@@ -180,13 +203,13 @@ class Parser:
         <xs:attribute name="setting" type="nameType" use="required"/>
         <xs:attributeGroup ref="runAttr"/>
     </xs:complexType>
-    
+
     <!-- a runtag -->
     <xs:complexType name="runtagType">
         <xs:attributeGroup ref="runAttr"/>
         <xs:attribute name="tag" type="tagrefType" use="required"/>
     </xs:complexType>
-    
+
     <!-- simple types used througout the above definitions -->
     <xs:simpleType name="versionType">
         <xs:restriction base="xs:string">
@@ -199,19 +222,19 @@ class Parser:
             <xs:pattern value="[0-9]+(:[0-9]+(:[0-9]+)?)?"/>
         </xs:restriction>
     </xs:simpleType>
-    
+
     <xs:simpleType name="tagrefType">
         <xs:restriction base="xs:string">
             <xs:pattern value="(\*all\*)|([A-Za-z_\-0-9]+([ ]*[A-Za-z_\-0-9]+)*)([ ]*\|[ ]*([A-Za-z_\-0-9]+([ ]*[A-Za-z_\-0-9]+)*))*"/>
         </xs:restriction>
     </xs:simpleType>
-    
+
     <xs:simpleType name="nameType">
         <xs:restriction base="xs:string">
             <xs:pattern value="[A-Za-z_\-0-9]*"/>
         </xs:restriction>
     </xs:simpleType>
-    
+
     <!-- the root element -->
     <xs:element name="runscript" type="runscriptType">
         <!-- machine keys -->
@@ -273,7 +296,7 @@ class Parser:
 
         doc = etree.parse(open(fileName))
         schema.assertValid(doc)
-        
+
         root = doc.getroot()
         run  = Runscript(root.get("output"))
 
@@ -283,10 +306,10 @@ class Parser:
             run.addJob(job)
 
         for node in root.xpath("./seqjob"):
-            attr = self._filterAttr(node, ["name", "timeout", "runs", "parallel"])
-            job = SeqJob(node.get("name"), tools.xmlTime(node.get("timeout")), int(node.get("runs")), int(node.get("parallel")), attr)
+            attr = self._filterAttr(node, ["name", "timeout", "memory","runs", "parallel"])
+            job = SeqJob(node.get("name"), tools.xmlTime(node.get("timeout")), int(node.get("runs")), int(node.get("parallel")), attr,int(node.get("memory")))
             run.addJob(job)
-        
+
         for node in root.xpath("./machine"):
             machine = Machine(node.get("name"), node.get("cpu"), node.get("memory"))
             run.addMachine(machine)
@@ -294,20 +317,20 @@ class Parser:
         for node in root.xpath("./config"):
             config = Config(node.get("name"), node.get("template"))
             run.addConfig(config)
-        
+
         compoundSettings = {}
-        sytemOrder = 0 
+        sytemOrder = 0
         for node in root.xpath("./system"):
             system = System(node.get("name"), node.get("version"), node.get("measures"), sytemOrder)
             settingOrder = 0
             for child in node.xpath("setting"):
-                attr = self._filterAttr(child, ["name", "cmdline", "tag"])
+                attr = self._filterAttr(child, ["name", "command", "options","tag"])
                 compoundSettings[child.get("name")] = []
                 if "procs" in attr:
                     procs = [int(proc) for proc in attr["procs"].split(None)]
                     del attr["procs"]
                 else: procs = [None]
-                if "ppn" in attr: 
+                if "ppn" in attr:
                     ppn = int(attr["ppn"])
                     del attr["ppn"]
                 else: ppn = None
@@ -319,22 +342,32 @@ class Parser:
                 else: tag = set(child.get("tag").split(None))
                 for num in procs:
                     name = child.get("name")
-                    if num != None: 
+                    if num != None:
                         name += "-n{0}".format(num)
                     compoundSettings[child.get("name")].append(name)
-                    setting = Setting(name, child.get("cmdline"), tag, settingOrder, num, ppn, pbstemplate, attr)
+                    setting = Setting(name, child.get("command"), child.get("options"), tag, settingOrder, num, ppn, pbstemplate, attr)
                     system.addSetting(setting)
                     settingOrder += 1
 
             run.addSystem(system, node.get("config"))
             sytemOrder += 1
-            
+
         for node in root.xpath("./benchmark"):
             benchmark = Benchmark(node.get("name"))
             for child in node.xpath("./folder"):
                 element = Benchmark.Folder(child.get("path"))
                 for grandchild in child.xpath("./ignore"):
                     element.addIgnore(grandchild.get("prefix"))
+                # Javier
+                for grandchild in child.xpath("./dir_ignore"):
+                    element.addDirIgnore(grandchild.get("prefix"))
+                for grandchild in child.xpath("./dir_accept"):
+                    element.addDirAccept(grandchild.get("prefix"))
+                for grandchild in child.xpath("./file_ignore"):
+                    element.addFileIgnore(grandchild.get("prefix"))
+                for grandchild in child.xpath("./file_accept"):
+                    element.addFileAccept(grandchild.get("prefix"))
+                # Javier
                 benchmark.addElement(element)
             for child in node.xpath("./files"):
                 element = Benchmark.Files(child.get("path"))
@@ -342,25 +375,25 @@ class Parser:
                     element.addFile(grandchild.get("file"))
                 benchmark.addElement(element)
             run.addBenchmark(benchmark)
-        
+
         for node in root.xpath("./project"):
             project = Project(node.get("name"))
             run.addProject(project, node.get("job"))
             for child in node.xpath("./runspec"):
-                for setting in compoundSettings[child.get("setting")]: 
+                for setting in compoundSettings[child.get("setting")]:
                     project.addRunspec(child.get("machine"),
                                        child.get("system"),
                                        child.get("version"),
                                        setting,
                                        child.get("benchmark"))
-                
+
             for child in node.xpath("./runtag"):
-                project.addRuntag(child.get("machine"), 
+                project.addRuntag(child.get("machine"),
                                   child.get("benchmark"),
                                   child.get("tag"))
-        
+
         return run
-    
+
     def _filterAttr(self, node, skip):
         """
         Returns a dictionary containing all attributes of a given node.
@@ -369,5 +402,5 @@ class Parser:
         attr = {}
         for key, val in node.items():
             if not key in skip:
-                attr[key] = val  
+                attr[key] = val
         return attr
