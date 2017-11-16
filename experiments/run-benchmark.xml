@@ -1,7 +1,7 @@
 <runscript output="output">
 	<machine name="houat" cpu="8xE5520@2.27GHz" memory="24GB"/>
 	<config name="seq-generic" template="templates/basic.sh"/>
-	<system name="general" version="0" measures="clingo" config="seq-generic">
+	<system name="script" version="0" measures="clingo" config="seq-generic">
         
 
     <!-- SET DIFFERENT CONFIGURATIONS /-->

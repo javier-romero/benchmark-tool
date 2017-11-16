@@ -4,7 +4,7 @@
 name=$1
 
 # set this
-btool=$HOME/benchmark-tool
+btool=$HOME/git/benchmark-tool
 
 # this has to be the same as project name in run-benchmark.xml
 project=project
