@@ -29,7 +29,7 @@
 	</benchmark>
 
 
-	<project name="general" job="seq-generic">
+	<project name="project" job="seq-generic">
         
  
     <!-- SET TAG IF NEEDED /-->

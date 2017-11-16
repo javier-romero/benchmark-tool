@@ -15,7 +15,10 @@ FILES
 HOWTO
 =====
 
-Of the given files, only run-benchmark.xml has to be modified.
+Before starting, set the value of variable btool in do_benchmarks.sh
+to the directory of the benchmark-tool.
+
+For running clingo, only run-benchmark.xml has to be modified.
 
 1. set in run-benchmark.xml:
    - configurations
@@ -32,4 +35,9 @@ Of the given files, only run-benchmark.xml has to be modified.
    do_benchmarks.sh name_of_the_experiments
 
 4. Results will be stored in directory
-     data/name_of_the_experiments
+     results/name_of_the_experiments
+
+For running other systems, 
+modify the $command and $options at run-benchmark.xml,
+and modify solver.sh to call the intended system.
+
