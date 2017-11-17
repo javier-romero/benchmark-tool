@@ -11,7 +11,7 @@ import re
 import sys
 import codecs
 
-clasp_re = {
+clingo_re = {
     "models"      : ("float",  re.compile(r"^(c )?Models[ ]*:[ ]*(?P<val>[0-9]+)\+?[ ]*$")),
     "choices"     : ("float",  re.compile(r"^(c )?Choices[ ]*:[ ]*(?P<val>[0-9]+)\+?[ ]*")),
     "time"        : ("float",  re.compile(r"^Real time \(s\): (?P<val>[0-9]+(\.[0-9]+)?)$")),
@@ -25,7 +25,7 @@ clasp_re = {
     "optimum"     : ("string", re.compile(r"^(c )?Optimization[ ]*:[ ]*(?P<val>(-?[0-9]+)( -?[0-9]+)*)[ ]*$")),
     "status"      : ("string", re.compile(r"^(s )?(?P<val>SATISFIABLE|UNSATISFIABLE|UNKNOWN|OPTIMUM FOUND)[ ]*$")),
     "interrupted" : ("string", re.compile(r"(c )?(?P<val>INTERRUPTED!)")),
-    "error"       : ("string", re.compile(r"^\*\*\* clasp ERROR: (?P<val>.*)$")),
+    "error"       : ("string", re.compile(r"^\*\*\* clingo ERROR: (?P<val>.*)$")),
     "memerror"    : ("string", re.compile(r"^Maximum VSize (?P<val>exceeded): sending SIGTERM then SIGKILL")),
     "mem"         : ("float",  re.compile(r"^Max\. virtual memory \(cumulated for all children\) \(KiB\): (?P<val>[0-9]+)")),
     "ground0"     : ("float",  re.compile(r"^(c )?First Ground[ ]*:[ ]*(?P<val>[0-9]+(\.[0-9]+)?)")),
@@ -34,14 +34,14 @@ clasp_re = {
 
 def clingo(root, runspec, instance):
     """
-    Extracts some clasp statistics.
+    Extracts some clingo statistics.
     """
 
     timeout = runspec.project.job.timeout
     res     = { "time": ("float", timeout) }
     for f in ["runsolver.solver", "runsolver.watcher"]:
         for line in codecs.open(os.path.join(root, f), errors='ignore', encoding='utf-8'):
-            for val, reg in clasp_re.items():
+            for val, reg in clingo_re.items():
                 m = reg[1].match(line)
                 if m:
                     res[val] = (reg[0], float(m.group("val")) if reg[0] == "float" else m.group("val"))
