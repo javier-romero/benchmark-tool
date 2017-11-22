@@ -1,3 +1,6 @@
 /.*
 programs/*
 /test.*
+*.ipynb
+*.xlsx
+*.ods
