@@ -37,5 +37,5 @@ echo "done"
 echo $dir/results/$name/$name.ods
 
 # send an email to report that the experiments are done
-# echo "done $1" | mail -s "[benchmark_finished] $1 " <email>
+# echo "done $1" | mail -s "[benchmark_finished] $1 " -A $dir/results/$name/$name.ods <email>
 
