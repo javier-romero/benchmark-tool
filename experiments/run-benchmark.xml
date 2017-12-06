@@ -5,9 +5,9 @@
         
 
     <!-- SET DIFFERENT CONFIGURATIONS /-->
-    <setting name="one"   command="/home/davila/Experiments/solver.sh" options="1 --stats" tag="doit"/>
-    <setting name="two"   command="/home/davila/Experiments/solver.sh" options="2 --stats" tag="doit"/>
-    <setting name="three" command="/home/davila/Experiments/solver.sh" options="3 --stats"           />
+    <setting name="one"   command="/home/davila/git/benchmark-tool/experiments/solver.sh" options="1 --stats" tag="doit"/>
+    <setting name="two"   command="/home/davila/git/benchmark-tool/experiments/solver.sh" options="2 --stats" tag="doit"/>
+    <setting name="three" command="/home/davila/git/benchmark-tool/experiments/solver.sh" options="3 --stats"           />
 
     
     </system>
@@ -19,7 +19,7 @@
 
     <!-- SET INSTANCE FOLDERS /-->
 	<benchmark name="seq-suite">
-        <folder path="/home/davila/Experiments/instances">		
+        <folder path="/home/davila/git/benchmark-tool/experiments/instances">		
             <dir_ignore  prefix="ko"/>
             <file_accept prefix="a"/>
             <file_accept prefix="pigeon"/>

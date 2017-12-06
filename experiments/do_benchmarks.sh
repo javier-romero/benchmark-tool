@@ -9,6 +9,9 @@ btool=$HOME/git/tmp/benchmark-tool
 # this has to be the same as project name in run-benchmark.xml
 project=project
 
+# this has to be the command used in run-benchmark.xml
+command=$PWD/solver.sh
+
 dir=$PWD
 bench=$dir/run-benchmark.xml
 
@@ -33,7 +36,9 @@ cat $dir/results/$name/$name.beval | ./bconv -m time,ctime,csolve,ground0,ground
 echo "tar..."
 tar -czf $name.tar.gz output/$project
 mv $name.tar.gz $dir/results/$name
-rm -rf output/$project
+cp $bench $dir/results/$name
+cp $command $dir/results/$name
+$rm -rf output/$project
 
 echo "done"
 echo $dir/results/$name/$name.ods
