@@ -4,7 +4,7 @@
 name=$1
 
 # set this
-btool=$HOME/git/tmp/benchmark-tool
+btool=$HOME/git/benchmark-tool
 
 # this has to be the same as project name in run-benchmark.xml
 project=project
@@ -38,7 +38,7 @@ tar -czf $name.tar.gz output/$project
 mv $name.tar.gz $dir/results/$name
 cp $bench $dir/results/$name
 cp $command $dir/results/$name
-$rm -rf output/$project
+rm -rf output/$project
 
 echo "done"
 echo $dir/results/$name/$name.ods
