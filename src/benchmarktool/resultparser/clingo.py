@@ -30,6 +30,8 @@ clingo_re = {
     "mem"         : ("float",  re.compile(r"^Max\. virtual memory \(cumulated for all children\) \(KiB\): (?P<val>[0-9]+)")),
     "ground0"     : ("float",  re.compile(r"^(c )?First Ground[ ]*:[ ]*(?P<val>[0-9]+(\.[0-9]+)?)")),
     "groundN"     : ("float",  re.compile(r"^(c )?Next Ground[ ]*:[ ]*(?P<val>[0-9]+(\.[0-9]+)?)")),
+    "max_length"  : ("float",  re.compile(r"^(c )?Max\. Length[ ]*:[ ]*(?P<val>[0-9]+)\+?[ ]*")),
+    "sol_length"  : ("float",  re.compile(r"^(c )?Sol\. Length[ ]*:[ ]*(?P<val>[0-9]+)\+?[ ]*")),
 }
 
 def clingo(root, runspec, instance):
