@@ -23,6 +23,8 @@ function run()
 
 function run2()
 {{
+    echo PBS_NODEFILE $PBS_NODEFILE
+    echo PBS_NODES $PBS_NODES
     MPIEXEC_TIMEOUT={run.timeout} \
 		mpiexec -machinefile $PBS_NODEFILE -n $PBS_NODES \
          {run.command} {run.file} {run.options} \ 
