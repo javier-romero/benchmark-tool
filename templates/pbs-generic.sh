@@ -39,7 +39,9 @@ case $1 in
 		run2
 		;;
 	*)    
-		cd "$(dirname $0)"
+		echo {run.command} {run.options} {run.file}
+        exit
+        cd "$(dirname $0)"
 		#zcat "{run.file}" > instance
 		cat "{run.file}" > instance
 		[[ -e .finished ]] || /usr/bin/time -f "Real time (s): %e" -o runsolver.watcher "./$(basename $0)" run2
