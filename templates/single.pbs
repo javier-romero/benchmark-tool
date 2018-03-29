@@ -1,10 +1,8 @@
 #!/bin/bash
 #SBATCH --output=out.%j
 #SBATCH --error=err.%j
-#SBATCH --nodes=2          # number of nodes
-#SBATCH --ntasks=4         # number of processor cores (i.e. tasks)
-#SBATCH --tasks-per-node=2 # number of tasks per node
-#SBATCH --exclusive
+#SBATCH --nodes=1          # number of nodes
+#SBATCH --ntasks=1         # number of processor cores (i.e. tasks)
 #SBATCH --time=00:10:00    # walltime
 
 #PBS -m n
