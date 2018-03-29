@@ -5,9 +5,9 @@
         
 
     <!-- SET DIFFERENT CONFIGURATIONS /-->
-    <setting name="one"   command="/home/davila/git/benchmark-tool/experiments/solver.sh" options="1 --stats" tag="doit"/>
-    <setting name="two"   command="/home/davila/git/benchmark-tool/experiments/solver.sh" options="2 --stats" tag="doit"/>
-    <setting name="three" command="/home/davila/git/benchmark-tool/experiments/solver.sh" options="3 --stats"           />
+    <setting name="one"   command="/home/davila/git/benchmark-tool/experiments/solver.sh" options="1 --stats" tag="doit" ppn="8" procs="1 2 4 8 16 28" pbstemplate="templates/single.pbs"/>
+    <setting name="two"   command="/home/davila/git/benchmark-tool/experiments/solver.sh" options="2 --stats" tag="doit" ppn="8" procs="1 2 4 8 16 28" pbstemplate="templates/single.pbs"/>
+    <setting name="three" command="/home/davila/git/benchmark-tool/experiments/solver.sh" options="3 --stats"            ppn="8" procs="1 2 4 8 16 28" pbstemplate="templates/single.pbs"/>
 
     
     </system>
