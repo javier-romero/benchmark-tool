@@ -40,7 +40,8 @@ case $1 in
 		;;
 	*)    
 		cd "$(dirname $0)"
-		zcat "{run.file}" > instance
+		#zcat "{run.file}" > instance
+		cat "{run.file}" > instance
 		[[ -e .finished ]] || /usr/bin/time -f "Real time (s): %e" -o runsolver.watcher "./$(basename $0)" run2
 		touch .finished
 		rm -f instance
