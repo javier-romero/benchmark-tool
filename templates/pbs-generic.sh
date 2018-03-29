@@ -23,7 +23,9 @@ function run()
 
 function run2()
 {{
-	MPIEXEC_TIMEOUT={run.timeout} \
+	echo {run.command} {run.file} {run.options} AAAAAAA
+    return
+    MPIEXEC_TIMEOUT={run.timeout} \
 		mpiexec -machinefile $PBS_NODEFILE -n $PBS_NODES \
          {run.command} {run.file} {run.options} \ 
          -f instance \
@@ -39,8 +41,6 @@ case $1 in
 		run2
 		;;
 	*)    
-		echo {run.command} {run.options} {run.file}
-        exit
         cd "$(dirname $0)"
 		#zcat "{run.file}" > instance
 		cat "{run.file}" > instance
