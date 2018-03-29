@@ -331,7 +331,7 @@ class ScriptGen:
             startpath = os.path.join(path, "start.sh")
             template  = open(runspec.system.config.template).read()
             startfile = open(startpath, "w")
-            print("AAA")
+            print(template)
             startfile.write(template.format(run=SeqRun(path, run, self.job, runspec, instance)))
             print("XXX")
             startfile.close()
