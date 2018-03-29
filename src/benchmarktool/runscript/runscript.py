@@ -289,6 +289,7 @@ class SeqRun(Run):
         # Javier
         self.memory   = self.job.memory
         # Javier
+        print("END")
 
 class ScriptGen:
     """
