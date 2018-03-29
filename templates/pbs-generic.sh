@@ -13,10 +13,6 @@ function run()
 	/usr/bin/time -f "Real time (s): %e" -o runsolver.watcher \
 	{run.command} {run.file} {run.options} \
 	> runsolver.solver 2>&1 &
-	#/usr/bin/time -f "Real time (s): %e" -o runsolver.watcher \
-	#"{run.root}/programs/{run.solver}" {run.args} \
-	#-f "{run.file}" \
-	#> runsolver.solver 2>&1 &
 	export MPI_PID=$!
 	export BASH_PID=$$
 	(sleep $[{run.timeout}+10]; kill -SIGUSR1 $BASH_PID) &
@@ -29,7 +25,6 @@ function run2()
 {{
 	MPIEXEC_TIMEOUT={run.timeout} \
 		mpiexec -machinefile $PBS_NODEFILE -n $PBS_NODES \
-#		"{run.root}/programs/{run.solver}" {run.args} \
          {run.command} {run.file} {run.options} \ 
          -f instance \
 		> runsolver.solver 2>&1
