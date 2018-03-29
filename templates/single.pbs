@@ -10,7 +10,7 @@
 
 source ~/.bashrc
 
-cd $PBS_O_WORKDIR
+#cd $PBS_O_WORKDIR
 
 echo running jobs@$(hostname)...
 {jobs}
