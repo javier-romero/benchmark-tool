@@ -259,6 +259,7 @@ class SeqRun(Run):
     runspec  - A reference to the run description
     instance - A reference to the instance to benchmark
     file     - A relative path to the instance
+    args     - The command line arguments for this run
     solver   - The solver for this run
     timeout  - The timeout of this run
     """
@@ -275,6 +276,7 @@ class SeqRun(Run):
         instance - A reference to the instance to benchmark
         """
         Run.__init__(self, path)
+        print("HERE")
         self.run      = run
         self.job      = job
         self.runspec  = runspec
@@ -328,6 +330,7 @@ class ScriptGen:
             startpath = os.path.join(path, "start.sh")
             template  = open(runspec.system.config.template).read()
             startfile = open(startpath, "w")
+            print("XXX")
             startfile.write(template.format(run=SeqRun(path, run, self.job, runspec, instance)))
             startfile.close()
             self.startfiles.append((runspec, path, "start.sh"))
