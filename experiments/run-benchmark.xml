@@ -1,7 +1,7 @@
 <runscript output="output">
-	<machine name="houat" cpu="8xE5520@2.27GHz" memory="24GB"/>
-	<config name="seq-generic" template="templates/basic.sh"/>
-	<system name="script" version="0" measures="clingo" config="seq-generic">
+	<machine name="zuse" cpu="24x8xE5520@2.27GHz" memory="24GB"/>
+	<config name="pbs-generic" template="templates/pbs-generic.sh"/>
+	<system name="script" version="0" measures="clingo" config="pbs-generic">
         
 
     <!-- SET DIFFERENT CONFIGURATIONS /-->
@@ -14,11 +14,11 @@
 
 
 	<!--  SET TIMEOUT, SET MEMORY, SET PARALLEL /-->
-	<seqjob name="seq-generic" timeout="10" memory="4000" runs="1" parallel="4"/>
+	<pbsjob name="pbs-generic" timeout="10" runs="1" script_mode="timeout" walltime="23:59:59"/>
 
 
     <!-- SET INSTANCE FOLDERS /-->
-	<benchmark name="seq-suite">
+	<benchmark name="pbs-suite">
         <folder path="/home/davila/git/benchmark-tool/experiments/instances">		
             <dir_ignore  prefix="ko"/>
             <file_accept prefix="a"/>
@@ -29,12 +29,12 @@
 	</benchmark>
 
 
-	<project name="project" job="seq-generic">
+	<project name="project" job="pbs-generic">
         
  
     <!-- SET TAG IF NEEDED /-->
 	<!--runtag machine="houat" benchmark="seq-suite" tag="*all*"/-->
-	<runtag machine="houat" benchmark="seq-suite" tag="doit"/>
+	<runtag machine="zuse" benchmark="pbs-suite" tag="doit"/>
 
 	
     </project>
