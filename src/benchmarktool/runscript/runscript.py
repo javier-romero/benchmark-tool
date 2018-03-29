@@ -276,7 +276,6 @@ class SeqRun(Run):
         instance - A reference to the instance to benchmark
         """
         Run.__init__(self, path)
-        print("HERE")
         self.run      = run
         self.job      = job
         self.runspec  = runspec
@@ -289,7 +288,6 @@ class SeqRun(Run):
         # Javier
         self.memory   = self.job.memory
         # Javier
-        print("END")
 
 class ScriptGen:
     """
@@ -331,9 +329,7 @@ class ScriptGen:
             startpath = os.path.join(path, "start.sh")
             template  = open(runspec.system.config.template).read()
             startfile = open(startpath, "w")
-            print(template)
             startfile.write(template.format(run=SeqRun(path, run, self.job, runspec, instance)))
-            print("XXX")
             startfile.close()
             self.startfiles.append((runspec, path, "start.sh"))
             tools.setExecutable(startpath)
