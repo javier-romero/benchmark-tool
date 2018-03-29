@@ -259,7 +259,6 @@ class SeqRun(Run):
     runspec  - A reference to the run description
     instance - A reference to the instance to benchmark
     file     - A relative path to the instance
-    args     - The command line arguments for this run
     solver   - The solver for this run
     timeout  - The timeout of this run
     """
