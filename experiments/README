@@ -26,7 +26,7 @@ For running clingo, only run-benchmark.xml has to be modified.
 
    - for a sequential job: timeout, memory and parallel number of processors
 
-   - for a cluster(pbs)-job: timeout, memory, cpus per tasks, and walltime
+   - for a cluster(pbs)-job: timeout, memory, cpus per tasks, walltime and partition of the cluster
      * in the cluster, the nodes of the kr partition have 8 cpus, and the others 48
        with cpt=8, in kr we reserve one node, and in the others we reserve 1/6 of a node
      * the walltime is used to determine the number of jobscripts to be send to the cluster

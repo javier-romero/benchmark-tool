@@ -3,7 +3,7 @@
 #SBATCH --error=err.%j
 #SBATCH --time={walltime}        # walltime
 #SBATCH --cpus-per-task={cpt}    # number of processor cores (i.e. tasks)
-#SBATCH --partition=kr
+#SBATCH --partition={partition}
 
 # Good Idea to stop operation on first error.
 set -e
