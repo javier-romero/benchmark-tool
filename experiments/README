@@ -15,26 +15,35 @@ FILES
 HOWTO
 =====
 
-Before starting, set the value of variable btool in do_benchmarks.sh
-to the directory of the benchmark-tool.
+Before starting, set the value of the variables at the start of do_benchmarks.sh.
 
 For running clingo, only run-benchmark.xml has to be modified.
 
-1. set in run-benchmark.xml:
-   - configurations
-     the $command with as first argument one instance file, and then the options
-   - timeout, memory and parallel number of processors
+1. configure run-benchmark.xml:
+
+   - configurations: name, tag, command and options
+     * the tool runs: $command $instance $options
+
+   - for a sequential job: timeout, memory and parallel number of processors
+
+   - for a cluster(pbs)-job: timeout, memory, cpus per tasks, and walltime
+     * in the cluster, the nodes of the kr partition have 8 cpus, and the others 48
+       with cpt=8, in kr we reserve one node, and in the others we reserve 1/6 of a node
+     * the walltime is used to determine the number of jobscripts to be send to the cluster
+         jobs = (runs * instances * settings) * (timeout + 5min) / walltime
+       and to give a time limit to every jobscript
+
    - instance directory
      * you can use dir_accept, dir_ignore, file_accept, and file_ignore
        with X_accept only Xs starting with the prefix will be accepted
        with X_ignore      Xs starting with the prefix will be ignored
 
-2. set the $command and $options
+   - choose cluster or sequential project
 
-3. run 
+2. run 
    do_benchmarks.sh name_of_the_experiments
 
-4. Results will be stored in directory
+3. Results will be stored in directory
      results/name_of_the_experiments
 
 For running other systems, 

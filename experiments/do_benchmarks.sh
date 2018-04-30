@@ -12,6 +12,15 @@ project=project
 # this has to be the command used in run-benchmark.xml
 command=$PWD/solver.sh
 
+# set mode: sequential=1 or cluster=2
+mode=2
+
+# if mode==2, set username to your login in the cluster
+username=""
+
+# email to send the results
+email=""
+
 dir=$PWD
 bench=$dir/run-benchmark.xml
 
@@ -24,8 +33,16 @@ rm -rf output/$project
 echo "bgen..."
 ./bgen $bench
 
-echo "$btool/output/$project/houat/start.py..."
-./output/$project/houat/start.py
+if [ $mode -eq 1 ]; then
+    echo "$btool/output/$project/zuse/start.py..."
+    ./output/$project/zuse/start.py
+else
+    echo "$btool/output/$project/zuse/start.sh..."
+    ./output/$project/zuse/start.sh
+    while squeue | grep -q $username; do
+        sleep 1
+    done
+fi
 
 echo "beval..."
 ./beval $bench > $dir/results/$name/$name.beval 2> $dir/results/$name/$name.error
@@ -43,5 +60,5 @@ rm -rf output/$project
 echo "done"
 echo $dir/results/$name/$name.ods
 # send an email to report that the experiments are done
-# echo "done $1" | mail -s "[benchmark_finished] $1 " -A $dir/results/$name/$name.ods <email>
+echo "done $1" | mail -s "[benchmark_finished] $1 " -A $dir/results/$name/$name.ods $email
 

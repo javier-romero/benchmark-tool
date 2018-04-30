@@ -127,6 +127,8 @@ class Parser:
              </xs:simpleType>
         </xs:attribute>
         <xs:attribute name="walltime" type="timeType" use="required"/>
+        <xs:attribute name="cpt" type="xs:positiveInteger" use="required"/>
+        <xs:attribute name="memory" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
 
     <!-- a config -->
@@ -301,8 +303,8 @@ class Parser:
         run  = Runscript(root.get("output"))
 
         for node in root.xpath("./pbsjob"):
-            attr = self._filterAttr(node, ["name", "timeout", "runs", "ppn", "procs", "script_mode", "walltime"])
-            job = PbsJob(node.get("name"), tools.xmlTime(node.get("timeout")), int(node.get("runs")), node.get("script_mode"), tools.xmlTime(node.get("walltime")), attr)
+            attr = self._filterAttr(node, ["name", "timeout", "runs", "ppn", "procs", "script_mode", "walltime", "cpt", "memory"])
+            job = PbsJob(node.get("name"), tools.xmlTime(node.get("timeout")), int(node.get("runs")), node.get("script_mode"), tools.xmlTime(node.get("walltime")), int(node.get("cpt")), int(node.get("memory")), attr)
             run.addJob(job)
 
         for node in root.xpath("./seqjob"):
@@ -337,7 +339,7 @@ class Parser:
                 if "pbstemplate" in attr:
                     pbstemplate = attr["pbstemplate"]
                     del attr["pbstemplate"]
-                else: pbstemplate = None
+                else: pbstemplate = "templates/single.pbs" # Javier
                 if child.get("tag") == None: tag = set()
                 else: tag = set(child.get("tag").split(None))
                 for num in procs:
